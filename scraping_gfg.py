@@ -16,9 +16,8 @@ with open('gfg_scrape.csv', 'w', encoding='utf-8') as f:
         source = requests.get(url).text
         soup = bs(source, 'lxml')
 
-
         try:
-        # All the aricles in a page are wrapped inside the "div<class=articles-list>"
+            # All the aricles in a page are wrapped inside the "div<class=articles-list>"
             articles_list = soup.find('div', class_='articles-list')
         except Exception as e:
             print('Error during extracting articles_list', e)
@@ -36,13 +35,14 @@ with open('gfg_scrape.csv', 'w', encoding='utf-8') as f:
                     'div', class_='text').text.replace('Read More', '')
                 article_tags = article.find('div', class_='tags').div.find_all(
                     'div', class_='tags-list_item')
-                article_tags_list = ', '.join([tag.text for tag in article_tags])
+                article_tags_list = ', '.join(
+                    [tag.text for tag in article_tags])
 
-                csv_writer.writerow([i, article_title, article_link, article_hint, article_tags_list])
+                csv_writer.writerow(
+                    [i, article_title, article_link, article_hint, article_tags_list])
                 print('Written page:', i)
         except Exception as e:
             print('Error during extracting all stuff', e)
-
 
             # print(article_title)
             # print(article_link)
@@ -51,6 +51,3 @@ with open('gfg_scrape.csv', 'w', encoding='utf-8') as f:
             # print('\n\n')
 end = time.time()
 print(end - start)
-
-import pandas as pd
-pd.read_csv('gfg_scrape.csv')
